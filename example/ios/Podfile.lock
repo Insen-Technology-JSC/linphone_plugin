@@ -1,0 +1,29 @@
+PODS:
+  - Flutter (1.0.0)
+  - linphone-sdk (5.2.114)
+  - linphone_plugin (0.0.1):
+    - Flutter
+    - linphone-sdk (~> 5.2.114)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - linphone_plugin (from `.symlinks/plugins/linphone_plugin/ios`)
+
+SPEC REPOS:
+  https://gitlab.linphone.org/BC/public/podspec.git:
+    - linphone-sdk
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  linphone_plugin:
+    :path: ".symlinks/plugins/linphone_plugin/ios"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  linphone-sdk: dfe70cd91cd826e1a6833f349525a305f11b438c
+  linphone_plugin: a04ba8dbbecb0551700893b82800a703c3b6ff50
+
+PODFILE CHECKSUM: ec3d2dc5b47dd73317e565546a2556ff710f7ecf
+
+COCOAPODS: 1.16.2
