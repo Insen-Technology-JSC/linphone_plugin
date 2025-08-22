@@ -1,10 +1,4 @@
-//
-//  OutgoingCall.swift
-//  OutgoingCall tutorial
-//
-//  Created by QuentinArguillere on 08/09/2021.
-//  Copyright © 2021 BelledonneCommunications. All rights reserved.
-//
+
 
 import linphonesw
 
@@ -45,12 +39,19 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
         LoggingService.Instance.logLevel = LogLevel.Warning
         
         try? mCore = Factory.Instance.createCore(configPath: "", factoryConfigPath: "", systemContext: nil)
+        
+            if let nat = try? mCore.createNatPolicy() {
+        nat.iceEnabled = true
+        nat.stunEnabled = true
+        nat.stunServer = "stun.linphone.org"
+        mCore.natPolicy = nat
+    }
+
         // Here we enable the video capture & display at Core level
         // It doesn't mean calls will be made with video automatically,
         // But it allows to use it later
         mCore.videoCaptureEnabled = true
         mCore.videoDisplayEnabled = true
-        
         // When enabling the video, the remote will either automatically answer the update request
         // or it will ask it's user depending on it's policy.
         // Here we have configured the policy to always automatically accept video requests
@@ -58,7 +59,7 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
         // If you don't want to automatically accept,
         // you'll have to use a code similar to the one in toggleVideo to answer a received request
         
-        
+
         // If the following property is enabled, it will automatically configure created call params with video enabled
         //core.videoActivationPolicy.automaticallyInitiate = true
         
@@ -91,6 +92,13 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
                 // or after the ICE negotiation completes
                 // Wait for the call to be connected before allowing a call update
                 self.isCallRunning = true
+
+                 self.isMicrophoneEnabled = true
+    core.micEnabled = true
+    if let speaker = core.audioDevices.first(where: { $0.type == .Speaker }) {
+        call.outputAudioDevice = speaker
+    }    
+
                 // Only enable toggle camera button if there is more than 1 camera
                 // We check if core.videoDevicesList.size > 2 because of the fake camera with static image created by our SDK (see below)
                 self.canChangeCamera = core.videoDevicesList.count > 2
@@ -190,6 +198,7 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
             let address = try Factory.Instance.createAddress(addr: String("sip:" + domain))
             try address.setTransport(newValue: transport)
             try accountParams.setServeraddress(newValue: address)
+            accountParams.natPolicy = mCore.natPolicy // 🔑 quan trọng: gán NAT policy cho account
             accountParams.registerEnabled = true
             mAccount = try mCore.createAccount(params: accountParams)
             mCore.addAuthInfo(info: authInfo)
@@ -249,15 +258,25 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
     
     func acceptCall() {
         // IMPORTANT : Make sure you allowed the use of the microphone (see key "Privacy - Microphone usage description" in Info.plist) !
-        do {
-            // if we wanted, we could create a CallParams object
-            // and answer using this object to make changes to the call configuration
-            // (see OutgoingCall tutorial)
-            try mCore.currentCall?.accept()
+        // do {
+        //     // if we wanted, we could create a CallParams object
+        //     // and answer using this object to make changes to the call configuration
+        //     // (see OutgoingCall tutorial)
+        //     try mCore.currentCall?.accept()
             
           
-                        NSLog("OutgoingCallTutorialContext, Accept call.....")
-        } catch { NSLog(error.localizedDescription) }
+        //                 NSLog("OutgoingCallTutorialContext, Accept call.....")
+        // } catch { NSLog(error.localizedDescription) }
+
+        do {
+        if let call = mCore.currentCall {
+            let params = try mCore.createCallParams(call: call)
+            params.audioEnabled = true
+            params.videoEnabled = false // hoặc true nếu muốn video
+            try call.acceptWithParams(params: params)
+            NSLog("Accept call with params...")
+        }
+    } catch { NSLog(error.localizedDescription) }
     }
     
     func terminateCall() {

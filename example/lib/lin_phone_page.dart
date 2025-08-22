@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:linphone_plugin/linphone_plugin.dart';
+import 'package:linphone_plugin/linphone_plugin.dart';
 
 import 'circular_button.dart';
 
@@ -26,65 +26,65 @@ class _LinPhonePageState extends State<LinPhonePage> {
   final _passwordController = TextEditingController(text: '400');
   final _domainController = TextEditingController(text: '10.10.1.155');
 
-  // @override
-  // void initState() {
-  //   // isRegistered = true;
-  //   // isIncomingReceived = true;
-  //   // isRegistered = true;
-  //   // isCallRunning = true;
-  //   ChannelHelper.instance.registerEventCallback(
-  //     eventCallback: (data) {
-  //       final funcName = jsonDecode(data)['funcName'];
-  //       final isRegister = jsonDecode(data)['isRegister'];
-  //       final remoteAddress = jsonDecode(data)['remoteAddress'];
+  @override
+  void initState() {
+    // isRegistered = true;
+    // isIncomingReceived = true;
+    // isRegistered = true;
+    // isCallRunning = true;
+    ChannelHelper.instance.registerEventCallback(
+      eventCallback: (data) {
+        final funcName = jsonDecode(data)['funcName'];
+        final isRegister = jsonDecode(data)['isRegister'];
+        final remoteAddress = jsonDecode(data)['remoteAddress'];
 
-  //       log(
-  //         '$runtimeType, register_callback | data: $data, funtion: $funcName',
-  //       );
-  //       switch (funcName) {
-  //         case 'onRegisterCallback':
-  //           if (isRegister) {
-  //             setState(() {
-  //               isRegistered = true;
-  //               isCallRunning = false;
-  //               isIncomingReceived = false;
-  //               isOutgoingCall = false;
-  //             });
-  //           }
-  //           break;
-  //         case 'onIncomingReceived':
-  //           setState(() {
-  //             isIncomingReceived = true;
-  //             isOutgoingCall = false;
-  //             remoteDest = remoteAddress;
-  //           });
-  //           break;
-  //         case 'onReleased':
-  //           setState(() {
-  //             isCallRunning = false;
-  //             isIncomingReceived = false;
-  //             isOutgoingCall = false;
-  //           });
+        log(
+          '$runtimeType, register_callback | data: $data, funtion: $funcName',
+        );
+        switch (funcName) {
+          case 'onRegisterCallback':
+            if (isRegister) {
+              setState(() {
+                isRegistered = true;
+                isCallRunning = false;
+                isIncomingReceived = false;
+                isOutgoingCall = false;
+              });
+            }
+            break;
+          case 'onIncomingReceived':
+            setState(() {
+              isIncomingReceived = true;
+              isOutgoingCall = false;
+              remoteDest = remoteAddress;
+            });
+            break;
+          case 'onReleased':
+            setState(() {
+              isCallRunning = false;
+              isIncomingReceived = false;
+              isOutgoingCall = false;
+            });
 
-  //         case 'onConnected':
-  //           setState(() {
-  //             isCallRunning = true;
-  //             isOutgoingCall = false;
-  //           });
-  //           break;
-  //         case 'onOutgoingProgress':
-  //           setState(() {
-  //             isOutgoingCall = true;
-  //             remoteDest = remoteAddress;
-  //           });
-  //           break;
-  //         default:
-  //           break;
-  //       }
-  //     },
-  //   );
-  //   super.initState();
-  // }
+          case 'onConnected':
+            setState(() {
+              isCallRunning = true;
+              isOutgoingCall = false;
+            });
+            break;
+          case 'onOutgoingProgress':
+            setState(() {
+              isOutgoingCall = true;
+              remoteDest = remoteAddress;
+            });
+            break;
+          default:
+            break;
+        }
+      },
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,13 +149,13 @@ class _LinPhonePageState extends State<LinPhonePage> {
                                     assetName:
                                         'assets/icons/ic_switch_camera.png',
                                     onPressed: () {
-                                      // ChannelHelper.instance.switchCamera();
+                                      ChannelHelper.instance.switchCamera();
                                     },
                                   ),
                                   _circleButton(
                                     assetName: 'assets/icons/ic_end_call.png',
                                     onPressed: () {
-                                      // ChannelHelper.instance.terminateCall();
+                                      ChannelHelper.instance.terminateCall();
                                     },
                                     bgColor: Colors.red,
                                   ),
@@ -164,7 +164,7 @@ class _LinPhonePageState extends State<LinPhonePage> {
                                         'assets/icons/ic_enable_speaker.png',
                                     bgColor: Colors.black.withOpacity(0.8),
                                     onPressed: () {
-                                      // ChannelHelper.instance.toggleSpeaker();
+                                      ChannelHelper.instance.toggleSpeaker();
                                     },
                                   ),
                                 ],
@@ -217,14 +217,14 @@ class _LinPhonePageState extends State<LinPhonePage> {
                                 _circleButton(
                                   assetName: 'assets/icons/ic_end_call.png',
                                   onPressed: () {
-                                    // ChannelHelper.instance.terminateCall();
+                                    ChannelHelper.instance.terminateCall();
                                   },
                                   bgColor: Colors.red,
                                 ),
                                 _circleButton(
                                   assetName: 'assets/icons/ic_accept_call.png',
                                   onPressed: () {
-                                    // ChannelHelper.instance.acceptCall();
+                                    ChannelHelper.instance.acceptCall();
                                   },
                                   bgColor: Colors.green,
                                 ),
@@ -377,11 +377,11 @@ class _LinPhonePageState extends State<LinPhonePage> {
                             '$runtimeType,register_info |  userName: ${userName},password:$password, domain:$domain',
                           );
 
-                          // ChannelHelper.instance.register(
-                          //   userName: userName,
-                          //   password: password,
-                          //   domain: domain,
-                          // );
+                          ChannelHelper.instance.register(
+                            userName: userName,
+                            password: password,
+                            domain: domain,
+                          );
                         },
                         child: const Text('Register'),
                       ),
