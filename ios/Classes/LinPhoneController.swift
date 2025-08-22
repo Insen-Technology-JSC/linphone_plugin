@@ -1,5 +1,3 @@
-
-
 import linphonesw
 
 class LinPhoneController : ObservableObject
@@ -40,12 +38,12 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
         
         try? mCore = Factory.Instance.createCore(configPath: "", factoryConfigPath: "", systemContext: nil)
         
-            if let nat = try? mCore.createNatPolicy() {
-        nat.iceEnabled = true
-        nat.stunEnabled = true
-        nat.stunServer = "stun.linphone.org"
-        mCore.natPolicy = nat
-    }
+        if let nat = try? mCore.createNatPolicy() {
+    nat.iceEnabled = true
+    nat.stunEnabled = true
+    nat.stunServer = "stun.linphone.org"
+    mCore.natPolicy = nat
+}
 
         // Here we enable the video capture & display at Core level
         // It doesn't mean calls will be made with video automatically,
@@ -61,7 +59,7 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
         
 
         // If the following property is enabled, it will automatically configure created call params with video enabled
-        //core.videoActivationPolicy.automaticallyInitiate = true
+        mCore.videoActivationPolicy!.automaticallyInitiate = true
         
         try? mCore.start()
         
@@ -198,12 +196,21 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
             let address = try Factory.Instance.createAddress(addr: String("sip:" + domain))
             try address.setTransport(newValue: transport)
             try accountParams.setServeraddress(newValue: address)
-            accountParams.natPolicy = mCore.natPolicy // 🔑 quan trọng: gán NAT policy cho account
+            // 🔑 quan trọng: gán NAT policy cho account
+
+            accountParams.natPolicy = mCore.natPolicy 
+            // 🔑 Bật AVPF
+            // accountParams.avpfMode = AVPFMode.enabled
+         accountParams.avpfMode = AVPFMode.Default
+accountParams.avpfRrInterval = 5
+            // Enable register
             accountParams.registerEnabled = true
+
             mAccount = try mCore.createAccount(params: accountParams)
             mCore.addAuthInfo(info: authInfo)
             try mCore.addAccount(account: mAccount!)
             mCore.defaultAccount = mAccount
+
             
         } catch { NSLog(error.localizedDescription) }
     }
