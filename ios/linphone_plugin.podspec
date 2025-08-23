@@ -12,7 +12,7 @@ A new Flutter plugin project.
   s.source_files = 'Classes/**/*','linphone-sdk/include/**/*'
   s.dependency 'Flutter'
   s.platform = :ios, '13.0'
-  s.dependency 'linphone-sdk', '~> 5.2.114' 
+  s.dependency 'linphone-sdk', '~> 5.3.0' 
   # s.dependency 'linphone-sdk', '~> 5.3.0' 
   s.pod_target_xcconfig = {
    'DEFINES_MODULE' => 'YES',

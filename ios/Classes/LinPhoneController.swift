@@ -1,3 +1,4 @@
+
 import linphonesw
 
 class LinPhoneController : ObservableObject
@@ -112,18 +113,34 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
                 NSLog("OutgoingCallTutorialContext, UpdatedByRemote.....")
                 // When the remote requests a call update
             }else if (state == .IncomingReceived) { // When a call is received
+
+                 if let remoteParams = call.remoteParams {
+            if remoteParams.videoEnabled {
+                NSLog("📹 Incoming call WITH VIDEO offer")
+            } else {
+                NSLog("🎧 Incoming call AUDIO only")
+            }
+        } else {
+            NSLog("⚠️ No remoteParams found")
+        }
+
                 self.isCallIncoming = true
                 self.isCallRunning = false
                 self.remoteAddress = call.remoteAddress!.asStringUriOnly()
                 onIncomingReceived(self.remoteAddress)
             } else if (state == .Connected) { // When a call is over
+               
+                if let currentParams = call.currentParams {
+            if currentParams.videoEnabled {
+                NSLog("✅ Connected with VIDEO")
+            } else {
+                NSLog("✅ Connected with AUDIO only")
+            }
+        }
+
                 self.isCallIncoming = false
                 self.isCallRunning = true
                 // Enable accept video call
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // Change `2.0` to the desired number of seconds.
-                   // Code you want to be delayed
-                    self.toggleVideo()
-                }
                 onConnected(self.remoteAddress)
             } else if (state == .Released || state == .Error) { // When a call is over
                 self.isCallIncoming = false
@@ -147,8 +164,6 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
 
     
     func muteMicrophone() {
-        // The following toggles the microphone, disabling completely / enabling the sound capture
-        // from the device microphone
         mCore.micEnabled = !mCore.micEnabled
         isMicrophoneEnabled = !isMicrophoneEnabled
     }
@@ -156,33 +171,33 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
   
     
     func toggleSpeaker() {
-        // Get the currently used audio device
-        let currentAudioDevice = mCore.currentCall?.outputAudioDevice
-        let speakerEnabled = currentAudioDevice?.type == AudioDeviceType.Speaker
-        
-      //  let test = currentAudioDevice?.deviceName
-        // We can get a list of all available audio devices using
-        // Note that on tablets for example, there may be no Earpiece device
-        for audioDevice in mCore.audioDevices {
-            
-            // For IOS, the Speaker is an exception, Linphone cannot differentiate Input and Output.
-            // This means that the default output device, the earpiece, is paired with the default phone microphone.
-            // Setting the output audio device to the microphone will redirect the sound to the earpiece.
-            if (speakerEnabled && audioDevice.type == AudioDeviceType.Microphone) {
-                mCore.currentCall?.outputAudioDevice = audioDevice
-                isSpeakerEnabled = false
-                return
-            } else if (!speakerEnabled && audioDevice.type == AudioDeviceType.Speaker) {
-                mCore.currentCall?.outputAudioDevice = audioDevice
-                isSpeakerEnabled = true
-                return
-            }
-            /* If we wanted to route the audio to a bluetooth headset
-            else if (audioDevice.type == AudioDevice.Type.Bluetooth) {
-            core.currentCall?.outputAudioDevice = audioDevice
-            }*/
-        }
+    guard let call = mCore.currentCall else {
+        NSLog("⚠️ No active call to toggle speaker")
+        return
     }
+    
+    let currentAudioDevice = call.outputAudioDevice
+    let speakerEnabled = currentAudioDevice?.type == AudioDevice.Kind.Speaker
+    
+    for audioDevice in mCore.audioDevices {
+        if speakerEnabled && audioDevice.type == .Microphone {
+            call.outputAudioDevice = audioDevice
+            isSpeakerEnabled = false
+            NSLog("🔈 Switched to Earpiece")
+            return
+        } else if !speakerEnabled && audioDevice.type == .Speaker {
+            call.outputAudioDevice = audioDevice
+            isSpeakerEnabled = true
+            NSLog("🔊 Switched to Speaker")
+            return
+        }
+        // Bluetooth sample
+        // else if audioDevice.type == .Bluetooth {
+        //     call.outputAudioDevice = audioDevice
+        // }
+    }
+}
+
     
     func login() {
         
@@ -201,7 +216,8 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
             accountParams.natPolicy = mCore.natPolicy 
             // 🔑 Bật AVPF
             // accountParams.avpfMode = AVPFMode.enabled
-         accountParams.avpfMode = AVPFMode.Default
+        //  accountParams.avpfMode = AVPFMode.Default
+         accountParams.avpfMode = .Enabled
 accountParams.avpfRrInterval = 5
             // Enable register
             accountParams.registerEnabled = true
@@ -254,7 +270,7 @@ accountParams.avpfRrInterval = 5
 //            //End todo test force call video.
           
             // If we wanted to start the call with video directly
-//            params.videoEnabled = true
+           params.videoEnabled = true
             
             // Finally we start the call
             let _ = mCore.inviteAddressWithParams(addr: remoteAddress, params: params)
@@ -264,27 +280,34 @@ accountParams.avpfRrInterval = 5
     }
     
     func acceptCall() {
-        // IMPORTANT : Make sure you allowed the use of the microphone (see key "Privacy - Microphone usage description" in Info.plist) !
-        // do {
-        //     // if we wanted, we could create a CallParams object
-        //     // and answer using this object to make changes to the call configuration
-        //     // (see OutgoingCall tutorial)
-        //     try mCore.currentCall?.accept()
-            
-          
-        //                 NSLog("OutgoingCallTutorialContext, Accept call.....")
-        // } catch { NSLog(error.localizedDescription) }
-
-        do {
+    do {
         if let call = mCore.currentCall {
+            // 🔧 Tạo CallParams cho cuộc gọi hiện tại
             let params = try mCore.createCallParams(call: call)
+
+            // 🔑 Force bật audio + video
             params.audioEnabled = true
-            params.videoEnabled = false // hoặc true nếu muốn video
+            params.videoEnabled = true
+
+            // 🔑 Bật video policy từ Core (luôn luôn bật video)
+            if let videoPolicy = mCore.videoActivationPolicy {
+                videoPolicy.automaticallyAccept = true
+                videoPolicy.automaticallyInitiate = true
+            }
+
+            // 🔑 Bật video capture & display
+            mCore.videoCaptureEnabled = true
+            mCore.videoDisplayEnabled = true
+
+            // ✅ Accept call với params đã set
             try call.acceptWithParams(params: params)
-            NSLog("Accept call with params...")
+            NSLog("Accepting call with forced video...")
         }
-    } catch { NSLog(error.localizedDescription) }
+    } catch {
+        NSLog("acceptCall error: \(error.localizedDescription)")
     }
+}
+
     
     func terminateCall() {
         do {
