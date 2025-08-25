@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/remote_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="sip:7100@10.10.1.100"
+        android:hint="Remote SIP address"/>
+
+    <TextureView
+        android:id="@+id/remote_video_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/remote_address"
+        android:layout_alignParentBottom="true"
+
+        />
+
+    <org.linphone.mediastream.video.capture.CaptureTextureView
+        android:id="@+id/local_preview_video_surface"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        />
+
+
+<!--    <Button-->
+<!--        android:id="@+id/toggle_camera"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:text="Switch Camera"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/toggle_speaker"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:text="Speaker"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/hang_up"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:text="End call"-->
+<!--        android:background="#ffe34234"-->
+<!--        android:textColor="#ffffff"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        />-->
+</RelativeLayout>

@@ -21,10 +21,10 @@ class _LinPhonePageState extends State<LinPhonePage> {
   var isCallRunning = false;
   var isOutgoingCall = false;
   var isIncomingReceived = false;
-  final textController = TextEditingController(text: '500');
-  final _usernameController = TextEditingController(text: '400');
-  final _passwordController = TextEditingController(text: '400');
-  final _domainController = TextEditingController(text: '10.10.1.155');
+  final textController = TextEditingController(text: '700');
+  final _usernameController = TextEditingController(text: '600');
+  final _passwordController = TextEditingController(text: '600');
+  final _domainController = TextEditingController(text: 'sip.insentecs.cloud');
 
   @override
   void initState() {
@@ -265,7 +265,7 @@ class _LinPhonePageState extends State<LinPhonePage> {
                                 assetName: 'assets/icons/ic_accept_call.png',
                                 bgColor: Colors.red,
                                 onPressed: () {
-                                  // ChannelHelper.instance.terminateCall();
+                                  ChannelHelper.instance.terminateCall();
                                 },
                               ),
                             ),
@@ -300,9 +300,9 @@ class _LinPhonePageState extends State<LinPhonePage> {
                                 assetName: 'assets/icons/ic_accept_call.png',
                                 bgColor: Colors.green,
                                 onPressed: () {
-                                  // ChannelHelper.instance.makeCall(
-                                  //   dest: textController.text,
-                                  // );
+                                  ChannelHelper.instance.makeCall(
+                                    dest: textController.text,
+                                  );
                                 },
                               ),
                             ),

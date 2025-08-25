@@ -6,6 +6,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://download.linphone.org/maven_repository" }
     }
 
     dependencies {
@@ -18,6 +19,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://download.linphone.org/maven_repository"
+        }
     }
 }
 
@@ -50,6 +54,9 @@ android {
     dependencies {
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.mockito:mockito-core:5.0.0")
+        implementation 'org.linphone:linphone-sdk-android:5.3.77'
+        implementation 'androidx.media:media:1.2.0'
+        implementation 'com.google.code.gson:gson:2.11.0'
     }
 
     testOptions {
