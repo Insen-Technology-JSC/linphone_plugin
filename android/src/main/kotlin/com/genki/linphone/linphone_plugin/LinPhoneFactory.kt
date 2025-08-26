@@ -5,20 +5,17 @@ import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
-import android.widget.Button
 import com.genki.linphone.linphone_plugin.R
+import org.linphone.core.Call
 import org.linphone.core.Core
 import org.linphone.core.CoreListenerStub
+import org.linphone.mediastream.video.capture.CaptureTextureView
 
 class LinPhoneFactory(
                       private val core: Core,
                       private val coreListener : CoreListenerStub,
-                      private val onHangUp: (()->Unit),
-                      private val onPauseOrResume: (()->Unit),
-                      private val onToggleVideo: (()->Unit),
-                      private val onToggleCamera: (()->Unit),
-                      private val onToggleSpeaker: (()->Unit),
     ) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
 
     override fun create(context: Context, id: Int, o: Any?): PlatformView {
@@ -26,37 +23,36 @@ class LinPhoneFactory(
             id = id,
             core = core,
             coreListener = coreListener,
-            onHangUp=onHangUp,
-            onPauseOrResume=onPauseOrResume,
-            onToggleVideo=onToggleVideo,
-            onToggleCamera=onToggleCamera,
-            onToggleSpeaker=onToggleSpeaker
             )
     }
 }
 
 class LinPhoneWidget internal constructor(context: Context, id: Int,
-                                          core: Core, coreListener : CoreListenerStub,
-                                          onHangUp: (()->Unit),
-                                          onPauseOrResume: (()->Unit),
-                                          onToggleVideo: (()->Unit)
-                                          ,onToggleCamera: (()->Unit)
-                                          ,onToggleSpeaker: (()->Unit)) : PlatformView {
-    private val view: View
-    private val core: Core
-    private val coreListener : CoreListenerStub
+                                          private val core: Core, coreListener : CoreListenerStub,
+                                         ) : PlatformView,CoreListenerStub() {
+    private val view: View = LayoutInflater.from(context).inflate(R.layout.linphone_widget, null)
+    private val remoteVideoView: TextureView = view.findViewById(R.id.remote_video_surface)
+    private val localPreviewView: CaptureTextureView = view.findViewById(R.id.local_preview_video_surface)
+
     override fun getView(): View {
         return view
     }
 
     init {
-        view = LayoutInflater.from(context).inflate(R.layout.linphone_widget, null)
-        this.core = core
-        this.coreListener = coreListener
-        this.core.nativeVideoWindowId =view.findViewById(R.id.remote_video_surface)
-        this.core.nativePreviewWindowId = view.findViewById(R.id.local_preview_video_surface)
+        core.addListener(this)
+        println("✅ LinPhoneWidget listener added")
+        core.nativeVideoWindowId =this.remoteVideoView
+        core.nativePreviewWindowId = this.localPreviewView
     }
-
     override fun dispose() {
+        core.removeListener(this)
+    }
+    override fun onCallStateChanged(core: Core, call: Call, state: Call.State, message: String) {
+        print("LinPhoneWidget, onCallStateChanged_state:$state");
+        if (state == Call.State.StreamsRunning) {
+            // đảm bảo video hiển thị đúng khi stream đã sẵn sàng
+            core.nativeVideoWindowId = remoteVideoView
+            core.nativePreviewWindowId = localPreviewView
+        }
     }
 }

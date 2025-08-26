@@ -148,9 +148,9 @@ class LinphonePlugin: FlutterPlugin, MethodChannel.MethodCallHandler,
                             )
                         )
                     )
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        toggleVideo()
-                    }, 1000)
+                    // Handler(Looper.getMainLooper()).postDelayed({
+                    //     toggleVideo()
+                    // }, 1000)
                 }
 
                 Call.State.StreamsRunning -> {
@@ -183,17 +183,17 @@ class LinphonePlugin: FlutterPlugin, MethodChannel.MethodCallHandler,
                     )
                 }
 
-                Call.State.Idle -> TODO()
-                Call.State.PushIncomingReceived -> TODO()
-                Call.State.OutgoingEarlyMedia -> TODO()
-                Call.State.Pausing -> TODO()
-                Call.State.Resuming -> TODO()
-                Call.State.Referred -> TODO()
-                Call.State.End -> TODO()
-                Call.State.IncomingEarlyMedia -> TODO()
-                Call.State.EarlyUpdatedByRemote -> TODO()
-                Call.State.EarlyUpdating -> TODO()
-                null -> TODO()
+                Call.State.Idle -> {}
+                Call.State.PushIncomingReceived -> {}
+                Call.State.OutgoingEarlyMedia -> {}
+                Call.State.Pausing -> {}
+                Call.State.Resuming -> {}
+                Call.State.Referred -> {}
+                Call.State.End -> {}
+                Call.State.IncomingEarlyMedia -> {}
+                Call.State.EarlyUpdatedByRemote -> {}
+                Call.State.EarlyUpdating -> {}
+                null -> {}
             }
         }
     }
@@ -212,22 +212,6 @@ class LinphonePlugin: FlutterPlugin, MethodChannel.MethodCallHandler,
             "android_native_view_integration",
             LinPhoneFactory(
                 core = core, coreListener = coreListener,
-                onHangUp = {
-                    hangUp()
-                },
-                onPauseOrResume = {
-                    pauseOrResume()
-                },
-                onToggleVideo = {
-                    toggleVideo()
-
-                },
-                onToggleCamera = {
-                    toggleCamera()
-                },
-                onToggleSpeaker = {
-                    toggleSpeaker()
-                },
             )
         )
   }
