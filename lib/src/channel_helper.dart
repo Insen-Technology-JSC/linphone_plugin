@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 
-const eventChannel = EventChannel('com.example.flutter/event_channel');
-const methodChannel = MethodChannel('com.example.flutter/method_channel');
+const eventChannel = EventChannel('com.insentecs.linphone/event_channel');
+const methodChannel = MethodChannel('com.insentecs.linphone/method_channel');
 
 class ChannelHelper {
   ChannelHelper._instance();

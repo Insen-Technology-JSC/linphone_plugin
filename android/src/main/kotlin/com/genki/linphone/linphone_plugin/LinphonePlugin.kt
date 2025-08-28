@@ -31,8 +31,8 @@ class LinphonePlugin: FlutterPlugin, MethodChannel.MethodCallHandler,
     EventChannel.StreamHandler {
   
   
-    private val eventChannel = "com.example.flutter/event_channel"
-    private val methodChannel = "com.example.flutter/method_channel"
+    private val eventChannel = "com.insentecs.linphone/event_channel"
+    private val methodChannel = "com.insentecs.linphone/method_channel"
     private lateinit var channel: MethodChannel
     private var messageChannel: EventChannel? = null
     private var eventSink: EventChannel.EventSink? = null

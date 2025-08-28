@@ -6,8 +6,8 @@ public class LinphonePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     private var linPhoneController = LinPhoneController()
 
     // Tên channel phải khớp với bên Dart
-    private static let eventChannelName = "com.example.flutter/event_channel"
-    private static let methodChannelName = "com.example.flutter/method_channel"
+    private static let eventChannelName = "com.insentecs.linphone/event_channel"
+    private static let methodChannelName = "com.insentecs.linphone/method_channel"
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let instance = LinphonePlugin()
