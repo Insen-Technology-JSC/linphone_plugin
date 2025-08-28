@@ -7,7 +7,7 @@ import linphonesw
 
 class LinPhoneFactory: NSObject, FlutterPlatformViewFactory {
   private var messenger: FlutterBinaryMessenger
-private var linPhoneController: LinPhoneController
+  private var linPhoneController: LinPhoneController
 
   init(messenger: FlutterBinaryMessenger,linPhoneController:LinPhoneController) {
     self.messenger = messenger
@@ -22,7 +22,6 @@ private var linPhoneController: LinPhoneController
     
   ) -> FlutterPlatformView {
     let channel = FlutterMethodChannel(name: "login_channel", binaryMessenger: messenger)
-
       return LinPhoneWrapper(
                   frame: frame,
                   viewIdentifier: viewId,
@@ -57,7 +56,6 @@ class LinPhoneWrapper: NSObject, FlutterPlatformView {
 
               let keyWindows = UIApplication.shared.windows.first(where: { $0.isKeyWindow}) ?? UIApplication.shared.windows.first
               let topController = keyWindows?.rootViewController
-        //   let vc = UIHostingController(rootView: PlayerView(doSomething: self.doSomething))
         let vc = UIHostingController(rootView: LinPhoneView(linPhoneController:linPhoneController))
               let swiftUiView = vc.view!
               swiftUiView.translatesAutoresizingMaskIntoConstraints = false
@@ -97,9 +95,7 @@ struct LinPhoneView: View {
     var body: some View {
         
         ZStack(alignment: .topTrailing){
-            //UI ongoing call.
             if(linPhoneController.loggedIn == true &&  linPhoneController.isCallRunning == true){
-                
                 ZStack(alignment: .top){
                     Text("\(linPhoneController.remoteAddress)")
                         .font(.title)

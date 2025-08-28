@@ -11,9 +11,14 @@ class ChannelHelper {
     required String userName,
     required String password,
     required String domain,
+    required String fbProjectId,
   }) async {
-    await methodChannel.invokeMethod('register',
-        {'user_name': userName, 'password': password, 'domain': domain});
+    await methodChannel.invokeMethod('register', {
+      'user_name': userName,
+      'password': password,
+      'domain': domain,
+      'fb_project_id': fbProjectId,
+    });
   }
 
   Future<void> makeCall({required String dest}) async {

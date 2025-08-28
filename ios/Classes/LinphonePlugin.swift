@@ -11,23 +11,15 @@ public class LinphonePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let instance = LinphonePlugin()
-
-        // Method channel
         let methodChannel = FlutterMethodChannel(name: methodChannelName,
                                                  binaryMessenger: registrar.messenger())
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
-
-        // Event channel
         let eventChannel = FlutterEventChannel(name: eventChannelName,
                                                binaryMessenger: registrar.messenger())
         eventChannel.setStreamHandler(instance)
-
-        // Register native view nếu có
         let viewFactory = LinPhoneFactory(messenger: registrar.messenger(),
                                           linPhoneController: instance.linPhoneController)
         registrar.register(viewFactory, withId: "ios_native_view_integration")
-
-        // Init Linphone core
         instance.initLinphone()
     }
 
@@ -66,7 +58,6 @@ public class LinphonePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         )
     }
 
-    // MARK: - MethodChannel
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "register":
@@ -74,10 +65,11 @@ public class LinphonePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
             let userName = arguments?["user_name"] as? String
             let password = arguments?["password"] as? String
             let domain = arguments?["domain"] as? String
-
+            let fbProjectId = arguments?["fb_project_id"] as? String
             linPhoneController.domain = domain ?? ""
             linPhoneController.username = userName ?? ""
             linPhoneController.passwd = password ?? ""
+            linPhoneController.fbProjectId = fbProjectId ?? ""
             linPhoneController.login()
             result(nil)
 
@@ -109,7 +101,6 @@ public class LinphonePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         }
     }
 
-    // MARK: - EventChannel
     public func onListen(withArguments arguments: Any?, eventSink: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = eventSink
         return nil

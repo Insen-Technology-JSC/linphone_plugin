@@ -50,7 +50,6 @@ class LinPhoneWidget internal constructor(context: Context, id: Int,
     override fun onCallStateChanged(core: Core, call: Call, state: Call.State, message: String) {
         print("LinPhoneWidget, onCallStateChanged_state:$state");
         if (state == Call.State.StreamsRunning) {
-            // đảm bảo video hiển thị đúng khi stream đã sẵn sàng
             core.nativeVideoWindowId = remoteVideoView
             core.nativePreviewWindowId = localPreviewView
         }

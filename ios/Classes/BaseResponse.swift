@@ -1,9 +1,3 @@
-//
-//  BaseResponse.swift
-//  Runner
-//
-//  Created by tuanhuynh on 04/09/2024.
-//
 
 import Foundation
 
