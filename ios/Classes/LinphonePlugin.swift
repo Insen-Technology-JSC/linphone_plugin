@@ -66,10 +66,12 @@ public class LinphonePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
             let password = arguments?["password"] as? String
             let domain = arguments?["domain"] as? String
             let fbProjectId = arguments?["fb_project_id"] as? String
+             let hubId = arguments?["hub_id"] as? String
             linPhoneController.domain = domain ?? ""
             linPhoneController.username = userName ?? ""
             linPhoneController.passwd = password ?? ""
             linPhoneController.fbProjectId = fbProjectId ?? ""
+            linPhoneController.hubId = hubId ?? ""
             linPhoneController.login()
             result(nil)
 

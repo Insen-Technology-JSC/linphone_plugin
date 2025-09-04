@@ -12,6 +12,7 @@ class LinPhoneController : ObservableObject
     @Published var passwd : String = "7000"
     @Published var domain : String = "10.10.1.100"
     @Published var fbProjectId : String = ""
+     @Published var hubId : String = ""
     @Published var loggedIn: Bool = false//for test default false
    
     // Outgoing call related variables
@@ -23,7 +24,6 @@ class LinPhoneController : ObservableObject
     @Published var isCallIncoming : Bool = false
     @Published var isSpeakerEnabled : Bool = false
     @Published var isMicrophoneEnabled : Bool = false
-    
     
 func initCore(onRegisterCallback: @escaping (Bool) -> Void,
               onIncomingReceived: @escaping (String) -> Void,
@@ -171,8 +171,11 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
             accountParams.avpfRrInterval = 5
             if let push = mCore.pushNotificationConfig {
             push.provider = "fcm"
-            push.param =String(domain)
-            push.prid = "genki" 
+            push.param = String(domain)
+            
+            // push.prid = "genki" 
+            push.prid = String(hubId)
+
             accountParams.pushNotificationConfig = push
             accountParams.pushNotificationAllowed = true   // BẮT BUỘC
             accountParams.remotePushNotificationAllowed = true

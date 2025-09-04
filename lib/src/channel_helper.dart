@@ -12,12 +12,14 @@ class ChannelHelper {
     required String password,
     required String domain,
     required String fbProjectId,
+    required String hubId,
   }) async {
     await methodChannel.invokeMethod('register', {
       'user_name': userName,
       'password': password,
       'domain': domain,
       'fb_project_id': fbProjectId,
+      'hub_id': hubId,
     });
   }
 

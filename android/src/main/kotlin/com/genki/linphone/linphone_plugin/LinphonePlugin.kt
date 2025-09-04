@@ -193,7 +193,7 @@ class LinphonePlugin: FlutterPlugin, MethodChannel.MethodCallHandler,
         )
   }
 
-    private fun login(username: String, password: String, domain: String,fbProjectId : String) {
+    private fun login(username: String, password: String, domain: String,fbProjectId : String,hubId : String) {
         val authInfo =
             Factory.instance().createAuthInfo(username, null, password, null, null, domain, null)
         val params = core.createAccountParams()
@@ -204,12 +204,14 @@ class LinphonePlugin: FlutterPlugin, MethodChannel.MethodCallHandler,
         params.serverAddress = address
         params.isRegisterEnabled = true
         val push = core.pushNotificationConfig
-        push?.param = "$fbProjectId"
-        push?.provider = "fcm"
+         val editableConfig = push?.clone()
+        editableConfig?.param = "$fbProjectId"
+        editableConfig?.provider = "fcm"
+        editableConfig?.prid = "$hubId"
         params.pushNotificationAllowed = true
         params.remotePushNotificationAllowed = true
-        if (push != null) {
-            params.pushNotificationConfig = push
+        if (editableConfig != null) {
+            params.pushNotificationConfig = editableConfig
         }
         val account = core.createAccount(params)
         core.addAuthInfo(authInfo)
@@ -304,10 +306,11 @@ class LinphonePlugin: FlutterPlugin, MethodChannel.MethodCallHandler,
                 val password = call.argument<String>("password")
                 val domain = call.argument<String>("domain")
                 val fbProjectId = call.argument<String>("fb_project_id")
+                val hubId = call.argument<String>("hub_id")
 
-                if (userName != null && password != null && domain != null && fbProjectId != null) {
+                if (userName != null && password != null && domain != null && fbProjectId != null && hubId != null) {
                     this.domain = domain
-                    login(username = userName, password = password, domain = domain,fbProjectId = fbProjectId)
+                    login(username = userName, password = password, domain = domain,fbProjectId = fbProjectId,hubId = hubId)
                 }
             }
 
