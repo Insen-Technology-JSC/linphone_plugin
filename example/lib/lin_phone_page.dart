@@ -21,9 +21,9 @@ class _LinPhonePageState extends State<LinPhonePage> {
   var isCallRunning = false;
   var isOutgoingCall = false;
   var isIncomingReceived = false;
-  final textController = TextEditingController(text: '700');
-  final _usernameController = TextEditingController(text: '600');
-  final _passwordController = TextEditingController(text: '600');
+  final textController = TextEditingController(text: '100');
+  final _usernameController = TextEditingController(text: '104');
+  final _passwordController = TextEditingController(text: 'a866a508563939d5');
   final _domainController = TextEditingController(text: 'sip.insentecs.cloud');
 
   @override
@@ -71,6 +71,7 @@ class _LinPhonePageState extends State<LinPhonePage> {
               isCallRunning = true;
               isOutgoingCall = false;
             });
+            ChannelHelper.instance.toggleSpeaker();
             break;
           case 'onOutgoingProgress':
             setState(() {
@@ -380,7 +381,9 @@ class _LinPhonePageState extends State<LinPhonePage> {
                           ChannelHelper.instance.register(
                             userName: userName,
                             password: password,
-                            domain: domain,
+                            domain: 'sip.insentecs.cloud',
+                            fbProjectId: 'dev-genki-notification',
+                            hubId: '',
                           );
                         },
                         child: const Text('Register'),
