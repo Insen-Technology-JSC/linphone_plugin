@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:linphone_plugin/linphone_plugin.dart';
+import 'package:linphone_plugin_example/storage.dart';
 
 import 'circular_button.dart';
 
@@ -22,9 +23,11 @@ class _LinPhonePageState extends State<LinPhonePage> {
   var isOutgoingCall = false;
   var isIncomingReceived = false;
   final textController = TextEditingController(text: '100');
-  final _usernameController = TextEditingController(text: '104');
-  final _passwordController = TextEditingController(text: 'a866a508563939d5');
-  final _domainController = TextEditingController(text: 'sip.insentecs.cloud');
+  final _usernameController = TextEditingController(text: '5004');
+  final _passwordController = TextEditingController(text: '4913b02c5fc4a4d9');
+  final _domainController = TextEditingController(
+    text: 'IST-GWH-2102-0001C031E907-L003032300001-dev.sip.insentecs.cloud',
+  );
 
   @override
   void initState() {
@@ -32,6 +35,14 @@ class _LinPhonePageState extends State<LinPhonePage> {
     // isIncomingReceived = true;
     // isRegistered = true;
     // isCallRunning = true;
+    if (Storage.instance.dest.isNotEmpty == true) {
+      textController.text = Storage.instance.dest;
+    }
+    if (Storage.instance.userName.isNotEmpty == true) {
+      _usernameController.text = Storage.instance.userName;
+      _passwordController.text = Storage.instance.password;
+      _domainController.text = Storage.instance.domain;
+    }
     ChannelHelper.instance.registerEventCallback(
       eventCallback: (data) {
         final funcName = jsonDecode(data)['funcName'];
@@ -44,6 +55,9 @@ class _LinPhonePageState extends State<LinPhonePage> {
         switch (funcName) {
           case 'onRegisterCallback':
             if (isRegister) {
+              Storage.instance.storeUser(value: _usernameController.text);
+              Storage.instance.storePassword(value: _passwordController.text);
+              Storage.instance.storeDomain(value: _domainController.text);
               setState(() {
                 isRegistered = true;
                 isCallRunning = false;
@@ -218,6 +232,7 @@ class _LinPhonePageState extends State<LinPhonePage> {
                                 _circleButton(
                                   assetName: 'assets/icons/ic_end_call.png',
                                   onPressed: () {
+                                    HapticFeedback.lightImpact();
                                     ChannelHelper.instance.terminateCall();
                                   },
                                   bgColor: Colors.red,
@@ -225,6 +240,7 @@ class _LinPhonePageState extends State<LinPhonePage> {
                                 _circleButton(
                                   assetName: 'assets/icons/ic_accept_call.png',
                                   onPressed: () {
+                                    HapticFeedback.lightImpact();
                                     ChannelHelper.instance.acceptCall();
                                   },
                                   bgColor: Colors.green,
@@ -259,13 +275,14 @@ class _LinPhonePageState extends State<LinPhonePage> {
                               height: MediaQuery.of(context).size.height / 3,
                             ),
                             Container(
-                              height: 56,
+                              height: 64,
                               margin: const EdgeInsets.symmetric(vertical: 40),
                               width: MediaQuery.of(context).size.width,
                               child: _circleButton(
                                 assetName: 'assets/icons/ic_accept_call.png',
                                 bgColor: Colors.red,
                                 onPressed: () {
+                                  HapticFeedback.lightImpact();
                                   ChannelHelper.instance.terminateCall();
                                 },
                               ),
@@ -294,15 +311,19 @@ class _LinPhonePageState extends State<LinPhonePage> {
                               height: MediaQuery.of(context).size.height / 3,
                             ),
                             Container(
-                              height: 56,
+                              height: 64,
                               margin: const EdgeInsets.symmetric(vertical: 40),
                               width: MediaQuery.of(context).size.width,
                               child: _circleButton(
                                 assetName: 'assets/icons/ic_accept_call.png',
                                 bgColor: Colors.green,
                                 onPressed: () {
+                                  HapticFeedback.lightImpact();
                                   ChannelHelper.instance.makeCall(
                                     dest: textController.text,
+                                  );
+                                  Storage.instance.storeDest(
+                                    value: textController.text,
                                   );
                                 },
                               ),
@@ -381,7 +402,7 @@ class _LinPhonePageState extends State<LinPhonePage> {
                           ChannelHelper.instance.register(
                             userName: userName,
                             password: password,
-                            domain: 'sip.insentecs.cloud',
+                            domain: domain,
                             fbProjectId: 'dev-genki-notification',
                             hubId: '',
                           );

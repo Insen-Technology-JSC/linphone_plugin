@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const _userName = 'user_name';
 const _password = 'password';
 const _domain = 'domain';
+const _dest = 'dest';
 
 class Storage {
   static final Storage instance = Storage._init();
@@ -30,7 +31,13 @@ class Storage {
     _pref?.setString(_domain, value);
   }
 
-  String get doamin => _getStringByKey(_domain);
+  String get domain => _getStringByKey(_domain);
+
+  void storeDest({required String value}) {
+    _pref?.setString(_dest, value);
+  }
+
+  String get dest => _getStringByKey(_dest);
 
   String _getStringByKey(String key) {
     return _pref?.getString(key) ?? '';
