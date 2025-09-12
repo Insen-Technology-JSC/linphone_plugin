@@ -213,8 +213,11 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
     
     func outgoingCall() {
         do {
-            NSLog("OutgoingCallTutorialContext, Outgoing call.....\(remoteAddress)")
-            let newRemoteAddress  = "sip:\(remoteAddress)@\(domain)"
+            NSLog("OutgoingCallTutorialContext, Outgoing call.....\(remoteAddress)")   
+            var newRemoteAddress: String =  "sip:\(remoteAddress)@\(domain)"
+            if remoteAddress.contains("sip") {
+             newRemoteAddress =   remoteAddress
+            }
             let remoteAddress = try Factory.Instance.createAddress(addr: newRemoteAddress)
             let params = try mCore.createCallParams(call: nil)
             params.mediaEncryption = MediaEncryption.None

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:linphone_plugin_example/storage.dart';
 
 import 'lin_phone_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Storage.instance.init();
   runApp(const MyApp());
 }
 
