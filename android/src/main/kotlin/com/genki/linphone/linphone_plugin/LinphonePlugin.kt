@@ -203,6 +203,7 @@ class LinphonePlugin: FlutterPlugin, MethodChannel.MethodCallHandler,
         address?.transport = TransportType.Tcp
         params.serverAddress = address
         params.isRegisterEnabled = true
+        params.expires = 1209600
         val push = core.pushNotificationConfig
          val editableConfig = push?.clone()
         editableConfig?.param = "$fbProjectId"

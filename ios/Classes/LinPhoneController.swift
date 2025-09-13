@@ -168,6 +168,7 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
             try accountParams.setServeraddress(newValue: address)
             accountParams.natPolicy = mCore.natPolicy 
             accountParams.avpfMode = .Enabled
+            accountParams.expires = 1209600
             accountParams.avpfRrInterval = 5
             if let push = mCore.pushNotificationConfig {
             push.provider = "fcm"
