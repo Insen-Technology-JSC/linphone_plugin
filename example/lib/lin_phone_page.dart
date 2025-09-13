@@ -23,10 +23,10 @@ class _LinPhonePageState extends State<LinPhonePage> {
   var isOutgoingCall = false;
   var isIncomingReceived = false;
   final textController = TextEditingController(text: '100');
-  final _usernameController = TextEditingController(text: '5004');
-  final _passwordController = TextEditingController(text: '4913b02c5fc4a4d9');
+  final _usernameController = TextEditingController(text: '5002');
+  final _passwordController = TextEditingController(text: '5002');
   final _domainController = TextEditingController(
-    text: 'IST-GWH-2102-0001C031E907-L003032300001-dev.sip.insentecs.cloud',
+    text: 'IST-GWH-2102-0001C031E907-L003032300001.sip.insentecs.cloud',
   );
 
   @override
@@ -38,11 +38,11 @@ class _LinPhonePageState extends State<LinPhonePage> {
     if (Storage.instance.dest.isNotEmpty == true) {
       textController.text = Storage.instance.dest;
     }
-    if (Storage.instance.userName.isNotEmpty == true) {
-      _usernameController.text = Storage.instance.userName;
-      _passwordController.text = Storage.instance.password;
-      _domainController.text = Storage.instance.domain;
-    }
+    // if (Storage.instance.userName.isNotEmpty == true) {
+    //   _usernameController.text = Storage.instance.userName;
+    //   _passwordController.text = Storage.instance.password;
+    //   _domainController.text = Storage.instance.domain;
+    // }
     ChannelHelper.instance.registerEventCallback(
       eventCallback: (data) {
         final funcName = jsonDecode(data)['funcName'];

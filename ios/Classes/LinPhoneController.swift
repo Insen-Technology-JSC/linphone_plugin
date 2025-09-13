@@ -171,10 +171,10 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
             accountParams.avpfRrInterval = 5
             if let push = mCore.pushNotificationConfig {
             push.provider = "fcm"
-            push.param = String(domain)
+            push.param = String(fbProjectId)
             
-            // push.prid = "genki" 
-            push.prid = String(hubId)
+            push.prid = "genki" 
+            // push.prid = String(hubId)
 
             accountParams.pushNotificationConfig = push
             accountParams.pushNotificationAllowed = true   // BẮT BUỘC
