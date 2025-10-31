@@ -38,11 +38,11 @@ class _LinPhonePageState extends State<LinPhonePage> {
     if (Storage.instance.dest.isNotEmpty == true) {
       textController.text = Storage.instance.dest;
     }
-    // if (Storage.instance.userName.isNotEmpty == true) {
-    //   _usernameController.text = Storage.instance.userName;
-    //   _passwordController.text = Storage.instance.password;
-    //   _domainController.text = Storage.instance.domain;
-    // }
+    if (Storage.instance.userName.isNotEmpty == true) {
+      _usernameController.text = Storage.instance.userName;
+      _passwordController.text = Storage.instance.password;
+      _domainController.text = Storage.instance.domain;
+    }
     ChannelHelper.instance.registerEventCallback(
       eventCallback: (data) {
         final funcName = jsonDecode(data)['funcName'];

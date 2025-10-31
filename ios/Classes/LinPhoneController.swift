@@ -161,9 +161,10 @@ func initCore(onRegisterCallback: @escaping (Bool) -> Void,
             let transport = TransportType.Tcp
             let authInfo = try Factory.Instance.createAuthInfo(username: username, userid: "", passwd: passwd, ha1: "", realm: "", domain: domain)
             let accountParams = try mCore.createAccountParams()
-            let identity = try Factory.Instance.createAddress(addr: String("sip:" + username + "@" + domain))
+            let identity = try Factory.Instance.createAddress(addr: String("sip:" + username + "@" + domain + ":5064" ))
+            NSLog("🔊 Login,identity \(identity.asStringUriOnly())")
             try! accountParams.setIdentityaddress(newValue: identity)
-            let address = try Factory.Instance.createAddress(addr: String("sip:" + domain))
+            let address = try Factory.Instance.createAddress(addr: String("sip:" + domain+":5064"))
             try address.setTransport(newValue: transport)
             try accountParams.setServeraddress(newValue: address)
             accountParams.natPolicy = mCore.natPolicy 

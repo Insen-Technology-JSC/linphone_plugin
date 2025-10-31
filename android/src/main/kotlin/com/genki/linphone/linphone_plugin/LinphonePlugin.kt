@@ -199,7 +199,7 @@ class LinphonePlugin: FlutterPlugin, MethodChannel.MethodCallHandler,
         val params = core.createAccountParams()
         val identity = Factory.instance().createAddress("sip:$username@$domain")
         params.identityAddress = identity
-        val address = Factory.instance().createAddress("sip:$domain")
+        val address = Factory.instance().createAddress("sip:$domain:5064")
         address?.transport = TransportType.Tcp
         params.serverAddress = address
         params.isRegisterEnabled = true

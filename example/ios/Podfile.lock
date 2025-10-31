@@ -1,28 +1,47 @@
 PODS:
+  - device_info_plus (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
-  - linphone-sdk (5.2.114)
+  - linphone-sdk (5.3.110)
   - linphone_plugin (0.0.1):
     - Flutter
-    - linphone-sdk (~> 5.2.114)
+    - linphone-sdk (~> 5.3.0)
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - vibration (3.0.0):
+    - Flutter
 
 DEPENDENCIES:
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - linphone_plugin (from `.symlinks/plugins/linphone_plugin/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - vibration (from `.symlinks/plugins/vibration/ios`)
 
 SPEC REPOS:
   https://gitlab.linphone.org/BC/public/podspec.git:
     - linphone-sdk
 
 EXTERNAL SOURCES:
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
   linphone_plugin:
     :path: ".symlinks/plugins/linphone_plugin/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  vibration:
+    :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
+  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  linphone-sdk: dfe70cd91cd826e1a6833f349525a305f11b438c
-  linphone_plugin: a04ba8dbbecb0551700893b82800a703c3b6ff50
+  linphone-sdk: 7f3e9ea1bbb012247d33bc296ed0c3a7a65faaf4
+  linphone_plugin: 6c3264e2de7489060ca464689e5fbe527506c3e0
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  vibration: 69774ad57825b11c951ee4c46155f455d7a592ce
 
 PODFILE CHECKSUM: ec3d2dc5b47dd73317e565546a2556ff710f7ecf
 
